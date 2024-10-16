@@ -1,5 +1,5 @@
 #### analysis of the saltmarsh data we collected on monday with the LCED course
-
+#THIS IS THE SCIRPT OF ALEXANDRA for the LCES course on shierkk
 # clear everything in the R environment
 rm(list = ls())
 renv::restore()  # restore the library
