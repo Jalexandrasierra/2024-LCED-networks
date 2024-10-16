@@ -1,5 +1,6 @@
 #### analysis of the saltmarsh data we collected on monday with the LCED course
 #THIS IS THE SCIRPT OF ALEXANDRA for the LCES course on shierkk
+#I, Yuxin will make statistics for you, 16th OCt of 2024
 # clear everything in the R environment
 rm(list = ls())
 renv::restore()  # restore the library
@@ -78,6 +79,16 @@ model <- lmerTest::lmer(ClayThick ~ Type + (1 | Point), data = AllData)
 summary(model)
 
 # test if the bare soil cover is different
-
+anova_result <- aov(BareCov ~ Type, data = AllData)
+summary(anova_result)
 # test if the species community composition is different with a permanova
+community_data <- AllData |>
+  group_by(Type, DomPlantName) |>
+  summarize(Count = n()) |>
+  pivot_wider(names_from = DomPlantName, values_from = Count, values_fill = list(Count = 0))
+# Create a distance matrix using Bray-Curtis distance
+distance_matrix <- vegan::vegdist(community_data[, -1], method = "bray")
+# Perform PERMANOVA
+permanova_result <- vegan::adonis2(distance_matrix ~ Type, data = community_data, permutations = 999)
+print(permanova_result)
 
